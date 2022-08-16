@@ -1,5 +1,4 @@
 require('dotenv').config();
-
 const express = require('express');
 const app = express();
 const cors = require('cors')
@@ -11,13 +10,15 @@ app.use(express.static('public')) //static folder for serving images
 
 const loginRoute = require('./routes/login')
 const signupRoute = require('./routes/signup')
+const shuttleRoute = require('./routes/shuttle')
 
 app.use('/login', loginRoute)
 app.use('/signup', signupRoute)
+app.use('/shuttle', shuttleRoute)
 
 
 // start Express on port 8080
-app.listen(8080, () => {
+app.listen(PORT, () => {
     console.log('Server Started on http://localhost:8080');
     console.log('Press CTRL + C to stop server');
 });
