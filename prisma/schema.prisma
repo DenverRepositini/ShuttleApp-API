@@ -8,9 +8,14 @@ datasource db {
 }
 
 model users {
-  id       Int     @id @default(autoincrement())
-  name     String @db.VarChar(255)
+  id       String  @id @default(uuid())
+  name     String  @db.VarChar(255)
   email    String  @unique(map: "User_email_key") @db.VarChar(255)
   location String  @db.VarChar(255)
   password String  @db.VarChar(255)
+}
+
+model worktrips {
+  id     String    @id @default(uuid())
+  time   String    @db.VarChar(255)
 }

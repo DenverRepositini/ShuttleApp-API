@@ -4,9 +4,9 @@ const app = express();
 const cors = require('cors')
 const PORT = process.env.PORT
 
-app.use(cors())
+app.use(cors());
 app.use(express.json()); //response formatted as JSON
-app.use(express.static('public')) //static folder for serving images
+// app.use(express.static('public')) //static folder for serving images
 
 const loginRoute = require('./routes/login')
 const signupRoute = require('./routes/signup')

@@ -1,9 +1,9 @@
-const { PrismaClient } = require('@prisma/client');
+
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
-const path = require("path");
-
+// const fs = require('fs');
+// const path = require("path");
+const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
@@ -21,20 +21,22 @@ async function verifyUser(email,password) {
     return allUsers;
   }
   
-router.get('/', (req,res)=> {
+router
+.route('/')
+.get((req,res)=> {
     res.send('Login page')
 })
-
-router.post('/', (req,res) => {
+.post((req,res) => {
     let email = req.body.email
     let password = req.body.password
     verifyUser(email,password)
     .then(async (data) => {
-      if (data.length === 1) {
-        res.send(data)
-      } else {
-        res.send('Invalid credentials')
-      }
+      // if (data.length === 1) {
+      //   res.send(data)
+      // } else {
+      //   res.send('Invalid credentials')
+      // }
+      data.length === 1 ? res.send(data): res.send ('Invalid credentials')
       console.log(data);
       await prisma.$disconnect()
     })

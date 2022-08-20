@@ -22,11 +22,12 @@ async function createUser(name,email,location,password) {
     return 'Signup Successful'
   }
 
-router.get('/', (req,res) => {
+router
+.route('/')
+.get((req,res) => {
     res.send('Signup page')
 })
-
-router.post('/', (req,res)=> {
+.post((req,res)=> {
     createUser(req.body.name,req.body.email,req.body.location,req.body.password)
     .then(async (data) => {
       console.log(data);
