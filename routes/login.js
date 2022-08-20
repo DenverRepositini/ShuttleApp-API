@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 // const fs = require('fs');
@@ -31,11 +30,7 @@ router
     let password = req.body.password
     verifyUser(email,password)
     .then(async (data) => {
-      // if (data.length === 1) {
-      //   res.send(data)
-      // } else {
-      //   res.send('Invalid credentials')
-      // }
+      //Check if user exists in database
       data.length === 1 ? res.send(data): res.send ('Invalid credentials')
       console.log(data);
       await prisma.$disconnect()

@@ -38,7 +38,7 @@ router
       location: driverLocation,
       lastSeen: lastUpdated
     }):
-    res.send('Location not found')
+    res.send('Location unknown')
   })    
 
 
