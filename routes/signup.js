@@ -25,7 +25,7 @@ async function createUser(name,email,location,password) {
 router
 .route('/')
 .get((req,res) => {
-    res.send('Signup page')
+    res.send('Signup page') 
 })
 .post((req,res)=> {
     createUser(req.body.name,req.body.email,req.body.location,req.body.password)
