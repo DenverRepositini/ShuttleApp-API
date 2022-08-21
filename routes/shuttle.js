@@ -11,24 +11,108 @@ const prisma = new PrismaClient();
 var driverLocation = null;
 var lastUpdated = null;
 
+// WORK TRIPS
+// Add users to work trips list
+async function addUser(name, location, time ) {
+  await prisma.worktrips.create({
+    data: {
+      name: name,
+      time: time,
+      location: location
+    }
+  })
+  return 'Added to list'
+}
+// Get info from work trips table
+async function getWorkTrips() {
+  const allUsers = await prisma.worktrips.findMany({
+    orderBy: {
+      time: 'asc'
+    }
+  });
+  return allUsers;
+}
+
+
+// GROCERY TRIPS------------------------------------------------------------
+// Add users to list
+async function addUserGrocery(name,location,) {
+  await prisma.grocerytrips.create({
+    data: {
+      name: name,
+      location: location
+    }
+  })
+  return 'Added to list'
+}
+// Get info from grocery trips table
+async function getGroceryTrips() {
+  const allUsers = await prisma.grocerytrips.findMany();
+  return allUsers;
+}
+
+//-------------------------------------------------------------------------
 router
   .route('/')
   .get((req,res) => {
         res.send('Home page')
   })
 
-router
+  // -------------------------------------------------------
+  router
   .route('/worktrips')
   .get((req,res)=> {
-    res.send('Work Shuttle')
+    getWorkTrips()
+    .then((data)=> {
+      console.log(data);
+      res.send(data)
+    })
+  })
+  .post((req,res) => {
+    let userName = req.body.name
+    let time = req.body.time
+    let userLocation = req.body.location
+    addUser(userName, userLocation, time)
+    .then(async(data)=> {
+      res.send(data)
+      console.log(data);
+      await prisma.$disconnect();
+    })
+    .catch(async(e)=> {
+      res.send('Error. User not added to trip')
+      console.log(e);
+      await prisma.$disconnect();
+    })
   })
   
+  // -------------------------------------------------------
 
 router
   .route('/grocerytrips')
   .get((req,res)=> {
-    res.send('Grocery trips')
+    getGroceryTrips()
+    .then((data)=> {
+      console.log(data);
+      res.send(data)
+    })
   })
+  .post((req,res) => {
+    let userName = req.body.name
+    let userLocation = req.body.location
+    addUserGrocery(userName, userLocation)
+    .then(async(data)=> {
+      res.send(data)
+      console.log(data);
+      await prisma.$disconnect();
+    })
+    .catch(async(e)=> {
+      res.send('Error. User not added to trip')
+      console.log(e);
+      await prisma.$disconnect();
+    })
+  })
+
+  // -------------------------------------------------------
 
 router
   .route('/pingshuttle')
@@ -41,7 +125,7 @@ router
     res.send('Location unknown')
   })    
 
-
+  // -------------------------------------------------------
   router
     .route('/driverlocation')
     .post((req,res)=> {

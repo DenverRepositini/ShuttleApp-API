@@ -16,6 +16,15 @@ model users {
 }
 
 model worktrips {
-  id     String    @id @default(uuid())
-  time   String    @db.VarChar(255)
+  id       String    @id @default(uuid())
+  name     String    @db.VarChar(255)
+  time     String    @db.VarChar(255)
+  location String    @db.VarChar(255)
 }
+
+model grocerytrips {
+  id       String    @id @default(uuid())
+  name     String    @db.VarChar(255)
+  location String    @db.VarChar(255)
+}
+
