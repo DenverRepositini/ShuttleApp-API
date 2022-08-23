@@ -51,6 +51,16 @@ async function getGroceryTrips() {
   return allUsers;
 }
 
+// Delete user from trip list 
+async function deleteUserGrocery(id) {
+  const deleteUser = await prisma.grocerytrips.delete({
+    where: {
+      id: id
+    }
+  })
+  return deleteUser;
+}
+
 //-------------------------------------------------------------------------
 router
   .route('/')
@@ -59,6 +69,7 @@ router
   })
 
   // -------------------------------------------------------
+      // WORK TRIPS
   router
   .route('/worktrips')
   .get((req,res)=> {
@@ -86,7 +97,7 @@ router
   })
   
   // -------------------------------------------------------
-
+    // GROCERY TRIPS
 router
   .route('/grocerytrips')
   .get((req,res)=> {
@@ -111,9 +122,25 @@ router
       await prisma.$disconnect();
     })
   })
+  // -----DELETE POST---------------------
+  router.route('/grocerytrips/:id')
+  .delete((req,res) => {
+        let userId = req.params.id
+        deleteUserGrocery(userId)
+        .then(async(data)=> {
+          res.send(data)
+          await prisma.$disconnect();
+        })
+        .catch(async(e)=> {
+          res.send('Error. Could not delete user')
+          console.log(e);
+          await prisma.$disconnect();
+        })
+      }
+  )
 
-  // -------------------------------------------------------
-
+  // ----------------------------------------------------------------------
+  // PING SHUTTLE 
 router
   .route('/pingshuttle')
   .get((req,res)=> {
@@ -126,6 +153,7 @@ router
   })    
 
   // -------------------------------------------------------
+  // DRIVER LOCATION INPUT
   router
     .route('/driverlocation')
     .post((req,res)=> {
