@@ -4,8 +4,6 @@ const path = require("path");
 const axios = require('axios');
 const { PrismaClient } = require('@prisma/client');
 
-// Google Maps api key
-const mapsKey = 'AIzaSyB7iTcMNo0Ju4-JOzrIAkAFz5RIbgN1eM8';
 const prisma = new PrismaClient();
 
 var driverLocation = null;
@@ -31,6 +29,17 @@ async function getWorkTrips() {
     }
   });
   return allUsers;
+}
+
+
+// Delete user from trip list 
+async function deleteUserWorktrip(id) {
+  const deleteUserWork = await prisma.worktrips.delete({
+    where: {
+      id: id
+    }
+  })
+  return deleteUserWork;
 }
 
 
@@ -61,14 +70,14 @@ async function deleteUserGrocery(id) {
   return deleteUser;
 }
 
-//-------------------------------------------------------------------------
+//------------------------ ROUTES --------------------------------------------------------//
 router
   .route('/')
   .get((req,res) => {
         res.send('Home page')
   })
 
-  // -------------------------------------------------------
+  // ----------------------------------------------------------------
       // WORK TRIPS
   router
   .route('/worktrips')
@@ -95,6 +104,23 @@ router
       await prisma.$disconnect();
     })
   })
+
+   // -----DELETE POST---------------------
+   router.route('/worktrips/:id')
+   .delete((req,res) => {
+         let userId = req.params.id
+         deleteUserWorktrip(userId)
+         .then(async(data)=> {
+           res.send(data)
+           await prisma.$disconnect();
+         })
+         .catch(async(e)=> {
+           res.send('Error. Could not delete user')
+           console.log(e);
+           await prisma.$disconnect();
+         })
+       }
+   )
   
   // -------------------------------------------------------
     // GROCERY TRIPS
