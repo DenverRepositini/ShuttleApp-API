@@ -23,7 +23,7 @@ async function createUser(name,email,location,password) {
 router
 .route('/')
 .get((req,res) => {
-    res.send('Signup page')
+    res.send('Signup page') 
 })
 .post((req,res)=> {
     let name =req.body.name

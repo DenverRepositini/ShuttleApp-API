@@ -75,6 +75,13 @@ router
   .route('/')
   .get((req,res) => {
         res.send('Home page')
+        getWorkTrips()
+        .then((data)=> {
+          return {
+            name: data.name,
+            location: data.location
+          }
+        })
   })
 
   // ----------------------------------------------------------------
