@@ -1,7 +1,5 @@
 const express = require('express')
 const router = express.Router();
-const fs = require('fs');
-const path = require("path");
 const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
@@ -28,14 +26,18 @@ router
     res.send('Signup page')
 })
 .post((req,res)=> {
-    createUser(req.body.name,req.body.email,req.body.location,req.body.password)
+    let name =req.body.name
+    let email = req.body.email
+    let location = req.body.location
+    let password = req.body.password
+    createUser(name, email, location, password)
     .then(async (data) => {
       console.log(data);
       res.send(data)
       await prisma.$disconnect()
     })
     .catch(async (e) => {
-      res.send('Error Signup unsuccessful')
+      res.send('Signup unsuccessful')
       console.error(e)
       await prisma.$disconnect()
     //   process.exit(1)
